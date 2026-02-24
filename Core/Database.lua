@@ -83,6 +83,21 @@ function ns.EnsureDB()
 
     _G.ELLAS_UTILS_DB.castbarSettings = castbarSettings
 
+    _G.ELLAS_UTILS_DB.playerResourcesSettings =
+        (type(_G.ELLAS_UTILS_DB.playerResourcesSettings) == "table") and _G.ELLAS_UTILS_DB.playerResourcesSettings or {}
+    local playerResourcesSettings = _G.ELLAS_UTILS_DB.playerResourcesSettings
+
+    if playerResourcesSettings.enabled == nil then playerResourcesSettings.enabled = false end
+    if playerResourcesSettings.hideEvokerEssence == nil then playerResourcesSettings.hideEvokerEssence = false end
+    if playerResourcesSettings.hideWindwalker == nil then playerResourcesSettings.hideWindwalker = false end
+    if playerResourcesSettings.hideArcane == nil then playerResourcesSettings.hideArcane = false end
+    if playerResourcesSettings.hideHolyPower == nil then playerResourcesSettings.hideHolyPower = false end
+    if playerResourcesSettings.hideSoulShards == nil then playerResourcesSettings.hideSoulShards = false end
+    if playerResourcesSettings.hideDruidComboPoints == nil then playerResourcesSettings.hideDruidComboPoints = false end
+    if playerResourcesSettings.hideRogueComboPoints == nil then playerResourcesSettings.hideRogueComboPoints = false end
+
+    _G.ELLAS_UTILS_DB.playerResourcesSettings = playerResourcesSettings
+
 
     DB_READY = true
     return addonDb

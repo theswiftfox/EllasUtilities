@@ -13,6 +13,7 @@ Core/FpsDisplay.lua
 Core/PingDisplay.lua
 Core/CursorCircle.lua
 Core/CastBar.lua
+Core/PlayerResource.lua
 UI/SettingsPanel.lua
 UI/EditMode.lua
 EllasUtilities.lua

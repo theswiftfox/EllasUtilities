@@ -520,6 +520,178 @@ local function createPingAndFpsSettings(category)
             end
         end,
     })
+
+    SettingsLib:CreateText(category, "-------------------------------------------")
+    SettingsLib:CreateText(category, "PlayerFrame special resource frames")
+
+    SettingsLib:CreateCheckbox(category, {
+        prefix = settingsPrefix,
+        key = "PR_EVO_ENABLED",
+        name = "Disable Evoker Essence Frame",
+        default = false,
+        get = function()
+            local db = ns.EnsureDB()
+            return db and
+                db.playerResourcesSettings and
+                db.playerResourcesSettings.hideEvokerEssence or false
+        end,
+        set = function(value)
+            local db = ns.EnsureDB()
+            if db then
+                if not db.playerResourcesSettings then
+                    db.playerResourcesSettings = {}
+                end
+                db.playerResourcesSettings.hideEvokerEssence = value
+                if ns.applyResourceSettings then
+                    ns.applyResourceSettings()
+                end
+            end
+        end
+    })
+    SettingsLib:CreateCheckbox(category, {
+        prefix = settingsPrefix,
+        key = "PR_WW_ENABLED",
+        name = "Disable Windwalker Chi Frame",
+        default = false,
+        get = function()
+            local db = ns.EnsureDB()
+            return db and
+                db.playerResourcesSettings and
+                db.playerResourcesSettings.hideWindwalker or false
+        end,
+        set = function(value)
+            local db = ns.EnsureDB()
+            if db then
+                if not db.playerResourcesSettings then
+                    db.playerResourcesSettings = {}
+                end
+                db.playerResourcesSettings.hideWindwalker = value
+                if ns.applyResourceSettings then
+                    ns.applyResourceSettings()
+                end
+            end
+        end
+    })
+    SettingsLib:CreateCheckbox(category, {
+        prefix = settingsPrefix,
+        key = "PR_ARC_ENABLED",
+        name = "Disable Arcane Charges Frame",
+        default = false,
+        get = function()
+            local db = ns.EnsureDB()
+            return db and
+                db.playerResourcesSettings and
+                db.playerResourcesSettings.hideArcane or false
+        end,
+        set = function(value)
+            local db = ns.EnsureDB()
+            if db then
+                if not db.playerResourcesSettings then
+                    db.playerResourcesSettings = {}
+                end
+                db.playerResourcesSettings.hideArcane = value
+                if ns.applyResourceSettings then
+                    ns.applyResourceSettings()
+                end
+            end
+        end
+    })
+    SettingsLib:CreateCheckbox(category, {
+        prefix = settingsPrefix,
+        key = "PR_HOLY_ENABLED",
+        name = "Disable Holy Power Frame",
+        default = false,
+        get = function()
+            local db = ns.EnsureDB()
+            return db and
+                db.playerResourcesSettings and
+                db.playerResourcesSettings.hideHolyPower or false
+        end,
+        set = function(value)
+            local db = ns.EnsureDB()
+            if db then
+                if not db.playerResourcesSettings then
+                    db.playerResourcesSettings = {}
+                end
+                db.playerResourcesSettings.hideHolyPower = value
+                if ns.applyResourceSettings then
+                    ns.applyResourceSettings()
+                end
+            end
+        end
+    })
+    SettingsLib:CreateCheckbox(category, {
+        prefix = settingsPrefix,
+        key = "PR_SHARDS_ENABLED",
+        name = "Disable Soul Shard Frame",
+        default = false,
+        get = function()
+            local db = ns.EnsureDB()
+            return db and
+                db.playerResourcesSettings and
+                db.playerResourcesSettings.hideSoulShards or false
+        end,
+        set = function(value)
+            local db = ns.EnsureDB()
+            if db then
+                if not db.playerResourcesSettings then
+                    db.playerResourcesSettings = {}
+                end
+                db.playerResourcesSettings.hideSoulShards = value
+                if ns.applyResourceSettings then
+                    ns.applyResourceSettings()
+                end
+            end
+        end
+    })
+    SettingsLib:CreateCheckbox(category, {
+        prefix = settingsPrefix,
+        key = "PR_DCP_ENABLED",
+        name = "Disable Druid ComboPoint Frame",
+        default = false,
+        get = function()
+            local db = ns.EnsureDB()
+            return db and
+                db.playerResourcesSettings and
+                db.playerResourcesSettings.hideDruidComboPoints or false
+        end,
+        set = function(value)
+            local db = ns.EnsureDB()
+            if db then
+                if not db.playerResourcesSettings then
+                    db.playerResourcesSettings = {}
+                end
+                db.playerResourcesSettings.hideDruidComboPoints = value
+                if ns.applyResourceSettings then
+                    ns.applyResourceSettings()
+                end
+            end
+        end
+    })
+    SettingsLib:CreateCheckbox(category, {
+        prefix = settingsPrefix,
+        key = "PR_RCP_ENABLED",
+        name = "Disable Rogue ComboPoint Frame",
+        default = false,
+        get = function()
+            local db = ns.EnsureDB()
+            return db and
+                db.playerResourcesSettings and
+                db.playerResourcesSettings.hideRogueComboPoints or false
+        end,
+        set = function(value)
+            local db = ns.EnsureDB()
+            if db then
+                if not db.playerResourcesSettings then
+                    db.playerResourcesSettings = {}
+                end
+                db.playerResourcesSettings.hideRogueComboPoints = value
+                if ns.applyResourceSettings then
+                    ns.applyResourceSettings()
+                end
+            end
+        end
+    })
 end
 
 function ns.InitializeSettingsUI()
