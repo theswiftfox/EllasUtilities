@@ -62,6 +62,7 @@ function ns.EnsureDB()
         (type(_G.ELLAS_UTILS_DB.castbarSettings) == "table") and _G.ELLAS_UTILS_DB.castbarSettings or {}
     local castbarSettings = _G.ELLAS_UTILS_DB.castbarSettings
 
+    if castbarSettings.enabled == nil then castbarSettings.enabled = false end
     if castbarSettings.castTimeFontSize == nil then castbarSettings.castTimeFontSize = 12 end
     if castbarSettings.textFontSize == nil then castbarSettings.textFontSize = 12 end
     if castbarSettings.textBorderShown == nil then castbarSettings.textBorderShown = true end

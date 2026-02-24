@@ -241,6 +241,31 @@ local function createPingAndFpsSettings(category)
     SettingsLib:CreateText(category, "-------------------------------------------")
     SettingsLib:CreateText(category, "Castbar settings")
 
+    SettingsLib:CreateCheckbox(category, {
+        prefix = settingsPrefix,
+        key = "CAST_ENABLED",
+        name = "Enable Castbar tweaks",
+        default = false,
+        get = function()
+            local db = ns.EnsureDB()
+            return db and
+                db.castbarSettings and
+                db.castbarSettings.enabled or false
+        end,
+        set = function(value)
+            local db = ns.EnsureDB()
+            if db then
+                if not db.castbarSettings then
+                    db.castbarSettings = {}
+                end
+                db.castbarSettings.enabled = value
+                if ns.applyCastbarSettings then
+                    ns.applyCastbarSettings()
+                end
+            end
+        end
+    })
+
     SettingsLib:CreateSlider(category, {
         prefix = settingsPrefix,
         key = "CAST_CASTTIME_FONT_SIZE",

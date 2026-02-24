@@ -18,6 +18,10 @@ local function applySettings()
     local text = frame.Text
     local textBorder = frame.TextBorder
 
+    if db.castbarSettings.enabled == false then
+        return
+    end
+
     local sizeCastTime = db.castbarSettings.castTimeFontSize or 12
     local anchorCastTime = db.castbarSettings.castTimeAnchor or {
         anchor = "RIGHT",
