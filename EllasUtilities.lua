@@ -24,6 +24,10 @@ eventFrame:SetScript("OnEvent", function(self, event)
             ns.createCCFrame()
         end
 
+        if type(ns.createRepairReminderFrame) == "function" then
+            ns.createRepairReminderFrame()
+        end
+
         if type(ns.InitializeEditMode) == "function" then
             ns.InitializeEditMode()
         end

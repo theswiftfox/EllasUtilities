@@ -18,8 +18,9 @@ function ns.InitializeEditMode()
     local function RegisterWhenReady()
         local fpsContainer = _G[ns.fpsFrameName]
         local pingContainer = _G[ns.pingFrameName]
+        local repairContainer = _G[ns.repairReminderFrameName]
 
-        if fpsContainer and pingContainer and not registeredFrames.registered then
+        if fpsContainer and pingContainer and repairContainer and not registeredFrames.registered then
             EditMode:AddFrame(
                 fpsContainer,
                 function(name, layoutName, point, offsetX, offsetY)
@@ -120,6 +121,57 @@ function ns.InitializeEditMode()
                 maxValue = 25,
                 valueStep = 1,
                 default = 12
+            } })
+
+            EditMode:AddFrame(
+                repairContainer,
+                function(name, layoutName, point, offsetX, offsetY)
+                    local db = ns.EnsureDB()
+                    if db then
+                        if not db.repairReminderSettings then
+                            db.repairReminderSettings = {}
+                        end
+                        db.repairReminderSettings.position = {
+                            point = point,
+                            offsetX = offsetX,
+                            offsetY = offsetY,
+                        }
+                        if ns.updateRepairReminderPosition then
+                            ns.updateRepairReminderPosition()
+                        end
+                    end
+                end,
+                {
+                    allowDrag = true,
+                    allowResize = false,
+                    showReset = true,
+                }
+            )
+
+            EditMode:AddFrameSettings(repairContainer, { {
+                name = "Font Size",
+                kind = EditMode.SettingType.Slider,
+                get = function(layoutName, layoutIndex)
+                    local db = ns.EnsureDB()
+                    return db and db.repairReminderSettings and db.repairReminderSettings.fontSize or 16
+                end,
+                set = function(layoutName, value, layoutIndex)
+                    local db = ns.EnsureDB()
+                    if db then
+                        if not db.repairReminderSettings then
+                            db.repairReminderSettings = {}
+                        end
+                        db.repairReminderSettings.fontSize = value
+
+                        if ns.updateRepairReminderFontSize then
+                            ns.updateRepairReminderFontSize()
+                        end
+                    end
+                end,
+                minValue = 5,
+                maxValue = 48,
+                valueStep = 1,
+                default = 16
             } })
 
             registeredFrames.registered = true

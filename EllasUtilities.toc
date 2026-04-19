@@ -14,6 +14,7 @@ Core/PingDisplay.lua
 Core/CursorCircle.lua
 Core/CastBar.lua
 Core/PlayerResource.lua
+Core/RepairReminder.lua
 UI/SettingsPanel.lua
 UI/EditMode.lua
 EllasUtilities.lua

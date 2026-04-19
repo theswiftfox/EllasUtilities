@@ -98,6 +98,21 @@ function ns.EnsureDB()
 
     _G.ELLAS_UTILS_DB.playerResourcesSettings = playerResourcesSettings
 
+    _G.ELLAS_UTILS_DB.repairReminderSettings =
+        (type(_G.ELLAS_UTILS_DB.repairReminderSettings) == "table") and _G.ELLAS_UTILS_DB.repairReminderSettings or {}
+    local repairReminderSettings = _G.ELLAS_UTILS_DB.repairReminderSettings
+
+    if repairReminderSettings.enabled == nil then repairReminderSettings.enabled = true end
+    if repairReminderSettings.threshold == nil then repairReminderSettings.threshold = 20 end
+    if repairReminderSettings.text == nil then repairReminderSettings.text = "Repair!" end
+    if repairReminderSettings.fontSize == nil then repairReminderSettings.fontSize = 16 end
+
+    if type(repairReminderSettings.position) ~= "table" then repairReminderSettings.position = {} end
+    if repairReminderSettings.position.point == nil then repairReminderSettings.position.point = "CENTER" end
+    if repairReminderSettings.position.offsetX == nil then repairReminderSettings.position.offsetX = 0 end
+    if repairReminderSettings.position.offsetY == nil then repairReminderSettings.position.offsetY = 200 end
+
+    _G.ELLAS_UTILS_DB.repairReminderSettings = repairReminderSettings
 
     DB_READY = true
     return addonDb

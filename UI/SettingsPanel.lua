@@ -522,6 +522,118 @@ local function createPingAndFpsSettings(category)
     })
 
     SettingsLib:CreateText(category, "-------------------------------------------")
+    SettingsLib:CreateText(category, "Repair Reminder settings")
+
+    SettingsLib:CreateCheckbox(category, {
+        prefix = settingsPrefix,
+        key = "REPAIR_ENABLED",
+        name = "Enable Repair Reminder",
+        default = true,
+        get = function()
+            local db = ns.EnsureDB()
+            return db and
+                db.repairReminderSettings and
+                db.repairReminderSettings.enabled
+        end,
+        set = function(value)
+            local db = ns.EnsureDB()
+            if db then
+                if not db.repairReminderSettings then
+                    db.repairReminderSettings = {}
+                end
+                db.repairReminderSettings.enabled = value
+            end
+            if ns.updateRepairReminderVisibility then
+                ns.updateRepairReminderVisibility(value)
+            end
+        end,
+    })
+
+    SettingsLib:CreateSlider(category, {
+        prefix = settingsPrefix,
+        key = "REPAIR_THRESHOLD",
+        name = "Durability warning threshold (%)",
+        formatter = function(value) return string.format("%d%%", value) end,
+        default = 20,
+        min = 1,
+        max = 100,
+        step = 1,
+        get = function()
+            local db = ns.EnsureDB()
+            return db and
+                db.repairReminderSettings and
+                db.repairReminderSettings.threshold or 20
+        end,
+        set = function(value)
+            local db = ns.EnsureDB()
+            if db then
+                if not db.repairReminderSettings then
+                    db.repairReminderSettings = {}
+                end
+                db.repairReminderSettings.threshold = value
+                if ns.updateRepairReminderThreshold then
+                    ns.updateRepairReminderThreshold()
+                end
+            end
+        end,
+    })
+
+    SettingsLib:CreateInput(category, {
+        prefix = settingsPrefix,
+        key = "REPAIR_TEXT",
+        name = "Warning text",
+        multiline = false,
+        default = "Repair!",
+        get = function()
+            local db = ns.EnsureDB()
+            return db and
+                db.repairReminderSettings and
+                db.repairReminderSettings.text or "Repair!"
+        end,
+        set = function(value)
+            local db = ns.EnsureDB()
+            if db then
+                if not db.repairReminderSettings then
+                    db.repairReminderSettings = {}
+                end
+                db.repairReminderSettings.text = value
+                if ns.updateRepairReminderText then
+                    ns.updateRepairReminderText()
+                end
+            end
+        end,
+    })
+
+    SettingsLib:CreateSlider(category, {
+        prefix = settingsPrefix,
+        key = "REPAIR_FONT_SIZE",
+        name = "Repair reminder font size",
+        formatter = function(value) return string.format("%d", value) end,
+        default = 16,
+        min = 5,
+        max = 48,
+        step = 1,
+        get = function()
+            local db = ns.EnsureDB()
+            return db and
+                db.repairReminderSettings and
+                db.repairReminderSettings.fontSize or 16
+        end,
+        set = function(value)
+            local db = ns.EnsureDB()
+            if db then
+                if not db.repairReminderSettings then
+                    db.repairReminderSettings = {}
+                end
+                db.repairReminderSettings.fontSize = value
+                if ns.updateRepairReminderFontSize then
+                    ns.updateRepairReminderFontSize()
+                end
+            end
+        end,
+    })
+
+    SettingsLib:CreateText(category, "-------------------------------------------")
     SettingsLib:CreateText(category, "PlayerFrame special resource frames")
 
     SettingsLib:CreateCheckbox(category, {
