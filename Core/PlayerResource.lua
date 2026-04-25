@@ -103,21 +103,94 @@ function ns.applyResourceSettings()
     applySettings()
 end
 
-local evtFrame = CreateFrame("Frame")
-evtFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+local evtFrame = nil
+local evtFrameUnitUpdate = nil
 
-evtFrame:SetScript("OnEvent", function(self, event, ...)
+local function teardown()
+    -- Unregister events
+    if evtFrame then
+        evtFrame:UnregisterAllEvents()
+        evtFrame:SetScript("OnEvent", nil)
+    end
+    if evtFrameUnitUpdate then
+        evtFrameUnitUpdate:UnregisterAllEvents()
+        evtFrameUnitUpdate:SetScript("OnEvent", nil)
+    end
+
+    -- Restore all original frames
+    if original.evoker then
+        if _G["EssencePlayerFrame"] == dummy then
+            _G["EssencePlayerFrame"] = original.evoker
+        end
+        showFrame(original.evoker)
+    end
+    if original.monk then
+        if _G["MonkHarmonyBarFrame"] == dummy then
+            _G["MonkHarmonyBarFrame"] = original.monk
+        end
+        showFrame(original.monk)
+    end
+    if original.arcane then
+        if _G["MageArcaneChargesFrame"] == dummy then
+            _G["MageArcaneChargesFrame"] = original.arcane
+        end
+        showFrame(original.arcane)
+    end
+    if original.holyPower then
+        if _G["PaladinPowerBarFrame"] == dummy then
+            _G["PaladinPowerBarFrame"] = original.holyPower
+        end
+        showFrame(original.holyPower)
+    end
+    if original.soulShards then
+        if _G["WarlockPowerFrame"] == dummy then
+            _G["WarlockPowerFrame"] = original.soulShards
+        end
+        showFrame(original.soulShards)
+    end
+    if original.druidCP then
+        if _G["DruidComboPointBarFrame"] == dummy then
+            _G["DruidComboPointBarFrame"] = original.druidCP
+        end
+        showFrame(original.druidCP)
+    end
+    if original.rogueCP then
+        if _G["RogueComboPointBarFrame"] == dummy then
+            _G["RogueComboPointBarFrame"] = original.rogueCP
+        end
+        showFrame(original.rogueCP)
+    end
+end
+
+function ns.initPlayerResources()
+    -- Create event frames if they don't exist yet
+    if not evtFrame then
+        evtFrame = CreateFrame("Frame")
+    end
+    evtFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+    evtFrame:SetScript("OnEvent", function(self, event, ...)
+        setup()
+        applySettings()
+    end)
+
+    if not evtFrameUnitUpdate then
+        evtFrameUnitUpdate = CreateFrame("Frame")
+    end
+    evtFrameUnitUpdate:RegisterEvent("UNIT_PORTRAIT_UPDATE")
+    evtFrameUnitUpdate:SetScript("OnEvent", function(self, event, unit, ...)
+        -- on druid shapeshift the combo points are automatically shown again when
+        -- shifting to cat. At the same time this event is triggered
+        -- hook it to disable CP immediately again if tweak is enabled
+        if unit == "player" then
+            applySettings()
+        end
+    end)
+
+    -- Apply immediately
     setup()
     applySettings()
-end)
+end
 
-local evtFrameUnitUpdate = CreateFrame("Frame")
-evtFrameUnitUpdate:RegisterEvent("UNIT_PORTRAIT_UPDATE")
-evtFrameUnitUpdate:SetScript("OnEvent", function(self, event, unit, ...)
-    -- on druid shapeshift the combo points are automatically shown again when
-    -- shifting to cat. At the same time this event is triggered
-    -- hook it to disable CP immediately again if tweak is enabled
-    if unit == "player" then
-        applySettings()
-    end
-end)
+function ns.teardownPlayerResources()
+    teardown()
+end

@@ -79,23 +79,40 @@ function ns.applyCastbarSettings()
     applySettings()
 end
 
--- Register events to re-apply settings
-local evtFrame = CreateFrame("Frame")
-evtFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
--- evtFrame:RegisterEvent("EDITMODE.ENTER")
--- evtFrame:RegisterEvent("EDITMODE.EXIT")
-evtFrame:SetScript("OnEvent", function(self, event, ...)
-    if not editModeHookDone then
-        local EditModeManagerFrame = _G.EditModeManagerFrame
-        if EditModeManagerFrame then
-            EditModeManagerFrame:HookScript("OnShow", function()
-                applySettings()
-            end)
-            EditModeManagerFrame:HookScript("OnHide", function()
-                applySettings()
-            end)
-        end
-    end
+local evtFrame = nil
 
+function ns.initCastbar()
+    -- Create event frame if it doesn't exist yet
+    if not evtFrame then
+        evtFrame = CreateFrame("Frame")
+    end
+    evtFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+    evtFrame:SetScript("OnEvent", function(self, event, ...)
+        if not editModeHookDone then
+            local EditModeManagerFrame = _G.EditModeManagerFrame
+            if EditModeManagerFrame then
+                EditModeManagerFrame:HookScript("OnShow", function()
+                    applySettings()
+                end)
+                EditModeManagerFrame:HookScript("OnHide", function()
+                    applySettings()
+                end)
+                editModeHookDone = true
+            end
+        end
+
+        applySettings()
+    end)
+
+    -- Apply immediately
     applySettings()
-end)
+end
+
+function ns.teardownCastbar()
+    if evtFrame then
+        evtFrame:UnregisterAllEvents()
+        evtFrame:SetScript("OnEvent", nil)
+    end
+    -- Note: font/position changes on Blizzard's PlayerCastingBarFrame
+    -- will revert on next UI reload since we no longer re-apply them.
+end

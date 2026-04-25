@@ -20,6 +20,10 @@ function ns.createFpsFrame()
     local fpsFrame = _G[ns.fpsFrameName]
     if fpsFrame then
         fpsFrame:Show()
+        -- Restart ticker if it was cancelled during teardown
+        if not ns.fpsFrameTicker or ns.fpsFrameTicker:IsCancelled() then
+            ns.fpsFrameTicker = createTicker()
+        end
         return
     end
 
@@ -105,5 +109,15 @@ function ns.updateFpsFontSize()
     local fpsFrame = _G[ns.fpsFrameName]
     if fpsFrame and fpsFrame.child and db and db.fpsSettings then
         fpsFrame.child:SetFont("fonts/frizqt__.ttf", db.fpsSettings.fontSize, "")
+    end
+end
+
+function ns.teardownFpsFrame()
+    local fpsFrame = _G[ns.fpsFrameName]
+    if fpsFrame then
+        fpsFrame:Hide()
+    end
+    if ns.fpsFrameTicker and not ns.fpsFrameTicker:IsCancelled() then
+        ns.fpsFrameTicker:Cancel()
     end
 end

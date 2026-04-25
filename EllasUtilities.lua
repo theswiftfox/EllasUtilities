@@ -12,20 +12,39 @@ eventFrame:SetScript("OnEvent", function(self, event)
             ns.EnsureDB()
         end
 
-        if type(ns.createFpsFrame) == "function" then
+        local db = _G.ELLAS_UTILS_DB
+
+        -- Only initialize modules that are enabled
+        if db.fpsSettings and db.fpsSettings.enabled and type(ns.createFpsFrame) == "function" then
             ns.createFpsFrame()
         end
 
-        if type(ns.createPingFrame) == "function" then
+        if db.pingSettings and db.pingSettings.enabled and type(ns.createPingFrame) == "function" then
             ns.createPingFrame()
         end
 
-        if type(ns.createCCFrame) == "function" then
+        if db.cursorRingSettings and db.cursorRingSettings.enabled and type(ns.createCCFrame) == "function" then
             ns.createCCFrame()
         end
 
-        if type(ns.createRepairReminderFrame) == "function" then
+        if db.castbarSettings and db.castbarSettings.enabled and type(ns.initCastbar) == "function" then
+            ns.initCastbar()
+        end
+
+        if db.playerResourcesSettings and db.playerResourcesSettings.enabled and type(ns.initPlayerResources) == "function" then
+            ns.initPlayerResources()
+        end
+
+        if db.repairReminderSettings and db.repairReminderSettings.enabled and type(ns.createRepairReminderFrame) == "function" then
             ns.createRepairReminderFrame()
+        end
+
+        if db.debuffDisplaySettings and db.debuffDisplaySettings.enabled and type(ns.createDebuffDisplayFrame) == "function" then
+            ns.createDebuffDisplayFrame()
+        end
+
+        if db.targetRangeSettings and db.targetRangeSettings.enabled and type(ns.createTargetRangeFrame) == "function" then
+            ns.createTargetRangeFrame()
         end
 
         if type(ns.InitializeEditMode) == "function" then

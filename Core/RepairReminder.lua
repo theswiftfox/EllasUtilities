@@ -32,6 +32,12 @@ local function evaluateVisibility()
         return
     end
 
+    -- Don't hide during Edit Mode so the mover stays visible
+    if EditModeManagerFrame and EditModeManagerFrame:IsShown() then
+        frame:Show()
+        return
+    end
+
     if not db.repairReminderSettings.enabled then
         frame:Hide()
         return
@@ -48,6 +54,15 @@ end
 function ns.createRepairReminderFrame()
     local frame = _G[ns.repairReminderFrameName]
     if frame then
+        -- Re-register events in case they were unregistered during teardown
+        if ns._repairReminderEventFrame then
+            ns._repairReminderEventFrame:RegisterEvent("UPDATE_INVENTORY_DURABILITY")
+            ns._repairReminderEventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+            ns._repairReminderEventFrame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
+            ns._repairReminderEventFrame:SetScript("OnEvent", function()
+                evaluateVisibility()
+            end)
+        end
         evaluateVisibility()
         return
     end
@@ -89,6 +104,19 @@ function ns.createRepairReminderFrame()
     end)
 
     ns._repairReminderEventFrame = eventFrame
+
+    -- Force-show during Edit Mode so the mover is visible, re-evaluate on close
+    if EditModeManagerFrame then
+        EditModeManagerFrame:HookScript("OnShow", function()
+            local f = _G[ns.repairReminderFrameName]
+            if f then
+                f:Show()
+            end
+        end)
+        EditModeManagerFrame:HookScript("OnHide", function()
+            evaluateVisibility()
+        end)
+    end
 
     evaluateVisibility()
 end
@@ -143,4 +171,15 @@ end
 
 function ns.updateRepairReminderThreshold()
     evaluateVisibility()
+end
+
+function ns.teardownRepairReminderFrame()
+    local frame = _G[ns.repairReminderFrameName]
+    if frame then
+        frame:Hide()
+    end
+    if ns._repairReminderEventFrame then
+        ns._repairReminderEventFrame:UnregisterAllEvents()
+        ns._repairReminderEventFrame:SetScript("OnEvent", nil)
+    end
 end

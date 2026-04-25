@@ -1,0 +1,13 @@
+# Build artifacts
+*.zip
+
+# Downloaded Ace3 libraries (fetched by package.sh)
+libs/CallbackHandler-1.0/
+libs/AceGUI-3.0/
+libs/AceConfig-3.0/
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/

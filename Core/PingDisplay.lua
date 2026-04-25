@@ -22,6 +22,10 @@ function ns.createPingFrame()
     local pingFrame = _G[ns.pingFrameName]
     if pingFrame then
         pingFrame:Show()
+        -- Restart ticker if it was cancelled during teardown
+        if not ns.pingFrameTicker or ns.pingFrameTicker:IsCancelled() then
+            ns.pingFrameTicker = createTicker()
+        end
         return
     end
 
@@ -108,5 +112,15 @@ function ns.updatePingFontSize()
     local pingFrame = _G[ns.pingFrameName]
     if pingFrame and pingFrame.child and db and db.pingSettings then
         pingFrame.child:SetFont("fonts/frizqt__.ttf", db.pingSettings.fontSize, "")
+    end
+end
+
+function ns.teardownPingFrame()
+    local pingFrame = _G[ns.pingFrameName]
+    if pingFrame then
+        pingFrame:Hide()
+    end
+    if ns.pingFrameTicker and not ns.pingFrameTicker:IsCancelled() then
+        ns.pingFrameTicker:Cancel()
     end
 end

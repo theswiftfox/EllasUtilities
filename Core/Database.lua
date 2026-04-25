@@ -50,11 +50,14 @@ function ns.EnsureDB()
     if cursorRingSettings.enabled == nil then cursorRingSettings.enabled = false end
     if cursorRingSettings.radius == nil then cursorRingSettings.radius = 25 end
     if cursorRingSettings.color == nil then cursorRingSettings.color = {} end
-    if cursorRingSettings.color.r == nil then cursorRingSettings.color.r = 255 end
-    if cursorRingSettings.color.g == nil then cursorRingSettings.color.g = 255 end
-    if cursorRingSettings.color.b == nil then cursorRingSettings.color.b = 255 end
+    if cursorRingSettings.color.r == nil then cursorRingSettings.color.r = 1 end
+    if cursorRingSettings.color.g == nil then cursorRingSettings.color.g = 1 end
+    if cursorRingSettings.color.b == nil then cursorRingSettings.color.b = 1 end
     if cursorRingSettings.color.a == nil then cursorRingSettings.color.a = 1.0 end
-
+    if cursorRingSettings.mode == nil then cursorRingSettings.mode = "solid" end
+    if cursorRingSettings.pulse == nil then cursorRingSettings.pulse = false end
+    if cursorRingSettings.pulseSpeed == nil then cursorRingSettings.pulseSpeed = 0.8 end
+    if cursorRingSettings.glowShape == nil then cursorRingSettings.glowShape = "circle" end
 
     _G.ELLAS_UTILS_DB.cursorRingSettings = cursorRingSettings
 
@@ -98,6 +101,26 @@ function ns.EnsureDB()
 
     _G.ELLAS_UTILS_DB.playerResourcesSettings = playerResourcesSettings
 
+    _G.ELLAS_UTILS_DB.debuffDisplaySettings =
+        (type(_G.ELLAS_UTILS_DB.debuffDisplaySettings) == "table") and _G.ELLAS_UTILS_DB.debuffDisplaySettings or {}
+    local debuffDisplaySettings = _G.ELLAS_UTILS_DB.debuffDisplaySettings
+
+    if debuffDisplaySettings.enabled == nil then debuffDisplaySettings.enabled = true end
+    if debuffDisplaySettings.useImportantFilter == nil then debuffDisplaySettings.useImportantFilter = false end
+    if debuffDisplaySettings.iconSize == nil then debuffDisplaySettings.iconSize = 32 end
+    if debuffDisplaySettings.growDirection == nil then debuffDisplaySettings.growDirection = "Right" end
+
+    if type(debuffDisplaySettings.position) ~= "table" then debuffDisplaySettings.position = {} end
+    if debuffDisplaySettings.position.point == nil then debuffDisplaySettings.position.point = "CENTER" end
+    if debuffDisplaySettings.position.offsetX == nil then debuffDisplaySettings.position.offsetX = 0 end
+    if debuffDisplaySettings.position.offsetY == nil then debuffDisplaySettings.position.offsetY = -200 end
+
+    if type(debuffDisplaySettings.size) ~= "table" then debuffDisplaySettings.size = {} end
+    if debuffDisplaySettings.size.width == nil then debuffDisplaySettings.size.width = 200 end
+    if debuffDisplaySettings.size.height == nil then debuffDisplaySettings.size.height = 40 end
+
+    _G.ELLAS_UTILS_DB.debuffDisplaySettings = debuffDisplaySettings
+
     _G.ELLAS_UTILS_DB.repairReminderSettings =
         (type(_G.ELLAS_UTILS_DB.repairReminderSettings) == "table") and _G.ELLAS_UTILS_DB.repairReminderSettings or {}
     local repairReminderSettings = _G.ELLAS_UTILS_DB.repairReminderSettings
@@ -114,6 +137,23 @@ function ns.EnsureDB()
 
     _G.ELLAS_UTILS_DB.repairReminderSettings = repairReminderSettings
 
+    _G.ELLAS_UTILS_DB.targetRangeSettings =
+        (type(_G.ELLAS_UTILS_DB.targetRangeSettings) == "table") and _G.ELLAS_UTILS_DB.targetRangeSettings or {}
+    local targetRangeSettings = _G.ELLAS_UTILS_DB.targetRangeSettings
+
+    if targetRangeSettings.enabled == nil then targetRangeSettings.enabled = true end
+    if targetRangeSettings.fontSize == nil then targetRangeSettings.fontSize = 14 end
+    if targetRangeSettings.updateRate == nil then targetRangeSettings.updateRate = 0.1 end
+    if targetRangeSettings.useRedColor == nil then targetRangeSettings.useRedColor = true end
+    if targetRangeSettings.redThreshold == nil then targetRangeSettings.redThreshold = 30 end
+
+    if type(targetRangeSettings.position) ~= "table" then targetRangeSettings.position = {} end
+    if targetRangeSettings.position.point == nil then targetRangeSettings.position.point = "CENTER" end
+    if targetRangeSettings.position.offsetX == nil then targetRangeSettings.position.offsetX = 0 end
+    if targetRangeSettings.position.offsetY == nil then targetRangeSettings.position.offsetY = -100 end
+
+    _G.ELLAS_UTILS_DB.targetRangeSettings = targetRangeSettings
+
     DB_READY = true
-    return addonDb
+    return _G.ELLAS_UTILS_DB
 end

@@ -1,12 +1,12 @@
-## Interface: 120001, 120000
+## Interface: 120000, 120001, 120005
 ## Title: Ellas Utilities
 ## Notes: Small Utilities used by Ellas UI
 ## Author: theswiftfox (aka Pawsitivity - TarrenMill)
-## Version: 1.0.0
+## Version: 1.1.1
 ## SavedVariables: ELLAS_UTILS_DB
-## Dependencies: LibEQOL
+## OptionalDeps: Ace3
 
-libs\LibStub\LibStub.lua
+loadLibs.xml
 
 Core/Database.lua
 Core/FpsDisplay.lua
@@ -15,6 +15,9 @@ Core/CursorCircle.lua
 Core/CastBar.lua
 Core/PlayerResource.lua
 Core/RepairReminder.lua
+Core/DebuffDisplay.lua
+Core/TargetRangeDisplay.lua
+UI/EditModeWrapper.lua
 UI/SettingsPanel.lua
 UI/EditMode.lua
 EllasUtilities.lua
