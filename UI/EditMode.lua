@@ -181,6 +181,122 @@ local function registerRepair(EM)
     return true
 end
 
+local function registerAvgDurability(EM)
+    if registeredModules.avgDurability then return true end
+    local container = _G[ns.avgDurabilityFrameName]
+    if not container then return false end
+
+    EM:AddFrame(
+        container,
+        "Average Durability",
+        function(point, offsetX, offsetY)
+            local db = ns.EnsureDB()
+            if db then
+                if not db.avgDurabilitySettings then db.avgDurabilitySettings = {} end
+                db.avgDurabilitySettings.position = {
+                    point = point,
+                    offsetX = offsetX,
+                    offsetY = offsetY,
+                }
+                if ns.updateAvgDurabilityPosition then
+                    ns.updateAvgDurabilityPosition()
+                end
+            end
+        end,
+        {
+            allowDrag = true,
+            showReset = true,
+            point = "CENTER",
+            offsetX = 0,
+            offsetY = 230,
+        }
+    )
+
+    EM:AddFrameSettings(container, { {
+        name = "Font Size",
+        kind = EM.SettingType.Slider,
+        get = function()
+            local db = ns.EnsureDB()
+            return db and db.avgDurabilitySettings and db.avgDurabilitySettings.fontSize or 14
+        end,
+        set = function(value)
+            local db = ns.EnsureDB()
+            if db then
+                if not db.avgDurabilitySettings then db.avgDurabilitySettings = {} end
+                db.avgDurabilitySettings.fontSize = value
+                if ns.updateAvgDurabilityFontSize then
+                    ns.updateAvgDurabilityFontSize()
+                end
+            end
+        end,
+        minValue = 5,
+        maxValue = 48,
+        valueStep = 1,
+        default = 14,
+    } })
+
+    registeredModules.avgDurability = true
+    return true
+end
+
+local function registerLowestSlot(EM)
+    if registeredModules.lowestSlot then return true end
+    local container = _G[ns.lowestSlotFrameName]
+    if not container then return false end
+
+    EM:AddFrame(
+        container,
+        "Lowest Slot",
+        function(point, offsetX, offsetY)
+            local db = ns.EnsureDB()
+            if db then
+                if not db.showLowestSlotSettings then db.showLowestSlotSettings = {} end
+                db.showLowestSlotSettings.position = {
+                    point = point,
+                    offsetX = offsetX,
+                    offsetY = offsetY,
+                }
+                if ns.updateLowestSlotPosition then
+                    ns.updateLowestSlotPosition()
+                end
+            end
+        end,
+        {
+            allowDrag = true,
+            showReset = true,
+            point = "CENTER",
+            offsetX = 0,
+            offsetY = 215,
+        }
+    )
+
+    EM:AddFrameSettings(container, { {
+        name = "Font Size",
+        kind = EM.SettingType.Slider,
+        get = function()
+            local db = ns.EnsureDB()
+            return db and db.showLowestSlotSettings and db.showLowestSlotSettings.fontSize or 12
+        end,
+        set = function(value)
+            local db = ns.EnsureDB()
+            if db then
+                if not db.showLowestSlotSettings then db.showLowestSlotSettings = {} end
+                db.showLowestSlotSettings.fontSize = value
+                if ns.updateLowestSlotFontSize then
+                    ns.updateLowestSlotFontSize()
+                end
+            end
+        end,
+        minValue = 5,
+        maxValue = 48,
+        valueStep = 1,
+        default = 12,
+    } })
+
+    registeredModules.lowestSlot = true
+    return true
+end
+
 local function registerDebuff(EM)
     if registeredModules.debuff then return true end
     local container = _G[ns.debuffDisplayFrameName]
@@ -331,6 +447,8 @@ local registerFunctions = {
     fps = registerFps,
     ping = registerPing,
     repair = registerRepair,
+    avgDurability = registerAvgDurability,
+    lowestSlot = registerLowestSlot,
     debuff = registerDebuff,
     targetRange = registerTargetRange,
 }

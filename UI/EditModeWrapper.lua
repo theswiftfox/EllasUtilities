@@ -59,18 +59,29 @@ local function deriveAnchorAndOffset(frame)
     local point = (vPoint .. hPoint)
     if point == "" then point = "CENTER" end
 
-    -- Compute offset from the chosen anchor on UIParent
-    local anchorX, anchorY = 0, 0
-    if hPoint == "LEFT" then anchorX = 0
-    elseif hPoint == "RIGHT" then anchorX = uiW
-    else anchorX = uiW / 2 end
+    -- Compute the frame's anchor-point position (not its center)
+    local frameAnchorX, frameAnchorY
+    if hPoint == "LEFT" then frameAnchorX = frame:GetLeft()
+    elseif hPoint == "RIGHT" then frameAnchorX = frame:GetRight()
+    else frameAnchorX = cx end
 
-    if vPoint == "BOTTOM" then anchorY = 0
-    elseif vPoint == "TOP" then anchorY = uiH
-    else anchorY = uiH / 2 end
+    if vPoint == "BOTTOM" then frameAnchorY = frame:GetBottom()
+    elseif vPoint == "TOP" then frameAnchorY = frame:GetTop()
+    else frameAnchorY = cy end
 
-    local offsetX = cx - anchorX
-    local offsetY = cy - anchorY
+    -- Compute the matching anchor position on UIParent
+    local uiAnchorX, uiAnchorY
+    if hPoint == "LEFT" then uiAnchorX = 0
+    elseif hPoint == "RIGHT" then uiAnchorX = uiW
+    else uiAnchorX = uiW / 2 end
+
+    if vPoint == "BOTTOM" then uiAnchorY = 0
+    elseif vPoint == "TOP" then uiAnchorY = uiH
+    else uiAnchorY = uiH / 2 end
+
+    -- Offset = distance from UIParent's anchor to the frame's anchor
+    local offsetX = frameAnchorX - uiAnchorX
+    local offsetY = frameAnchorY - uiAnchorY
 
     return point, math.floor(offsetX + 0.5), math.floor(offsetY + 0.5)
 end

@@ -137,6 +137,35 @@ function ns.EnsureDB()
 
     _G.ELLAS_UTILS_DB.repairReminderSettings = repairReminderSettings
 
+    _G.ELLAS_UTILS_DB.avgDurabilitySettings =
+        (type(_G.ELLAS_UTILS_DB.avgDurabilitySettings) == "table") and _G.ELLAS_UTILS_DB.avgDurabilitySettings or {}
+    local avgDurabilitySettings = _G.ELLAS_UTILS_DB.avgDurabilitySettings
+
+    if avgDurabilitySettings.enabled == nil then avgDurabilitySettings.enabled = true end
+    if avgDurabilitySettings.fontSize == nil then avgDurabilitySettings.fontSize = 14 end
+
+    if type(avgDurabilitySettings.position) ~= "table" then avgDurabilitySettings.position = {} end
+    if avgDurabilitySettings.position.point == nil then avgDurabilitySettings.position.point = "CENTER" end
+    if avgDurabilitySettings.position.offsetX == nil then avgDurabilitySettings.position.offsetX = 0 end
+    if avgDurabilitySettings.position.offsetY == nil then avgDurabilitySettings.position.offsetY = 230 end
+
+    _G.ELLAS_UTILS_DB.avgDurabilitySettings = avgDurabilitySettings
+
+    _G.ELLAS_UTILS_DB.showLowestSlotSettings =
+        (type(_G.ELLAS_UTILS_DB.showLowestSlotSettings) == "table") and _G.ELLAS_UTILS_DB.showLowestSlotSettings or {}
+    local showLowestSlotSettings = _G.ELLAS_UTILS_DB.showLowestSlotSettings
+
+    if showLowestSlotSettings.enabled == nil then showLowestSlotSettings.enabled = true end
+    if showLowestSlotSettings.threshold == nil then showLowestSlotSettings.threshold = 50 end
+    if showLowestSlotSettings.fontSize == nil then showLowestSlotSettings.fontSize = 12 end
+
+    if type(showLowestSlotSettings.position) ~= "table" then showLowestSlotSettings.position = {} end
+    if showLowestSlotSettings.position.point == nil then showLowestSlotSettings.position.point = "CENTER" end
+    if showLowestSlotSettings.position.offsetX == nil then showLowestSlotSettings.position.offsetX = 0 end
+    if showLowestSlotSettings.position.offsetY == nil then showLowestSlotSettings.position.offsetY = 215 end
+
+    _G.ELLAS_UTILS_DB.showLowestSlotSettings = showLowestSlotSettings
+
     _G.ELLAS_UTILS_DB.targetRangeSettings =
         (type(_G.ELLAS_UTILS_DB.targetRangeSettings) == "table") and _G.ELLAS_UTILS_DB.targetRangeSettings or {}
     local targetRangeSettings = _G.ELLAS_UTILS_DB.targetRangeSettings

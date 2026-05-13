@@ -39,6 +39,14 @@ eventFrame:SetScript("OnEvent", function(self, event)
             ns.createRepairReminderFrame()
         end
 
+        if db.avgDurabilitySettings and db.avgDurabilitySettings.enabled and type(ns.createAvgDurabilityFrame) == "function" then
+            ns.createAvgDurabilityFrame()
+        end
+
+        if db.showLowestSlotSettings and db.showLowestSlotSettings.enabled and type(ns.createLowestSlotFrame) == "function" then
+            ns.createLowestSlotFrame()
+        end
+
         if db.debuffDisplaySettings and db.debuffDisplaySettings.enabled and type(ns.createDebuffDisplayFrame) == "function" then
             ns.createDebuffDisplayFrame()
         end

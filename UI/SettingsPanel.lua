@@ -196,10 +196,50 @@ local options = {
                         end
                     end,
                 },
+                avgDurabilityEnabled = {
+                    name = "Average Durability Display",
+                    type = "toggle",
+                    order = 33,
+                    width = "full",
+                    get = function() local d = db(); return d and d.avgDurabilitySettings and d.avgDurabilitySettings.enabled end,
+                    set = function(_, v)
+                        local d = db()
+                        if d then
+                            if not d.avgDurabilitySettings then d.avgDurabilitySettings = {} end
+                            d.avgDurabilitySettings.enabled = v
+                        end
+                        if v then
+                            if ns.createAvgDurabilityFrame then ns.createAvgDurabilityFrame() end
+                            if ns.RegisterModuleEditMode then ns.RegisterModuleEditMode("avgDurability") end
+                        else
+                            if ns.teardownAvgDurabilityFrame then ns.teardownAvgDurabilityFrame() end
+                        end
+                    end,
+                },
+                lowestSlotEnabled = {
+                    name = "Lowest Slot Warning",
+                    type = "toggle",
+                    order = 34,
+                    width = "full",
+                    get = function() local d = db(); return d and d.showLowestSlotSettings and d.showLowestSlotSettings.enabled end,
+                    set = function(_, v)
+                        local d = db()
+                        if d then
+                            if not d.showLowestSlotSettings then d.showLowestSlotSettings = {} end
+                            d.showLowestSlotSettings.enabled = v
+                        end
+                        if v then
+                            if ns.createLowestSlotFrame then ns.createLowestSlotFrame() end
+                            if ns.RegisterModuleEditMode then ns.RegisterModuleEditMode("lowestSlot") end
+                        else
+                            if ns.teardownLowestSlotFrame then ns.teardownLowestSlotFrame() end
+                        end
+                    end,
+                },
                 resourceEnabled = {
                     name = "Player Resource Tweaks",
                     type = "toggle",
-                    order = 33,
+                    order = 35,
                     width = "full",
                     get = function() local d = db(); return d and d.playerResourcesSettings and d.playerResourcesSettings.enabled or false end,
                     set = function(_, v)
@@ -837,6 +877,106 @@ local options = {
                             if not d.repairReminderSettings then d.repairReminderSettings = {} end
                             d.repairReminderSettings.fontSize = v
                             if ns.updateRepairReminderFontSize then ns.updateRepairReminderFontSize() end
+                        end
+                    end,
+                },
+
+                -- Average Durability
+                avgHeader = {
+                    name = "Average Durability",
+                    type = "header",
+                    order = 25,
+                },
+                avgEnabled = {
+                    name = "Show Average Durability",
+                    type = "toggle",
+                    order = 26,
+                    width = "full",
+                    get = function() local d = db(); return d and d.avgDurabilitySettings and d.avgDurabilitySettings.enabled end,
+                    set = function(_, v)
+                        local d = db()
+                        if d then
+                            if not d.avgDurabilitySettings then d.avgDurabilitySettings = {} end
+                            d.avgDurabilitySettings.enabled = v
+                        end
+                        if v then
+                            if ns.createAvgDurabilityFrame then ns.createAvgDurabilityFrame() end
+                            if ns.RegisterModuleEditMode then ns.RegisterModuleEditMode("avgDurability") end
+                        else
+                            if ns.teardownAvgDurabilityFrame then ns.teardownAvgDurabilityFrame() end
+                        end
+                    end,
+                },
+                avgFontSize = {
+                    name = "Font Size",
+                    type = "range",
+                    order = 27,
+                    min = 5, max = 48, step = 1,
+                    get = function() local d = db(); return d and d.avgDurabilitySettings and d.avgDurabilitySettings.fontSize or 14 end,
+                    set = function(_, v)
+                        local d = db()
+                        if d then
+                            if not d.avgDurabilitySettings then d.avgDurabilitySettings = {} end
+                            d.avgDurabilitySettings.fontSize = v
+                            if ns.updateAvgDurabilityFontSize then ns.updateAvgDurabilityFontSize() end
+                        end
+                    end,
+                },
+
+                -- Lowest Slot
+                lowestSlotHeader = {
+                    name = "Lowest Slot",
+                    type = "header",
+                    order = 28,
+                },
+                lowestSlotEnabled = {
+                    name = "Show Lowest Slot Warning",
+                    type = "toggle",
+                    order = 29,
+                    width = "full",
+                    get = function() local d = db(); return d and d.showLowestSlotSettings and d.showLowestSlotSettings.enabled end,
+                    set = function(_, v)
+                        local d = db()
+                        if d then
+                            if not d.showLowestSlotSettings then d.showLowestSlotSettings = {} end
+                            d.showLowestSlotSettings.enabled = v
+                        end
+                        if v then
+                            if ns.createLowestSlotFrame then ns.createLowestSlotFrame() end
+                            if ns.RegisterModuleEditMode then ns.RegisterModuleEditMode("lowestSlot") end
+                        else
+                            if ns.teardownLowestSlotFrame then ns.teardownLowestSlotFrame() end
+                        end
+                    end,
+                },
+                lowestSlotThreshold = {
+                    name = "Lowest Slot Warning Threshold (%)",
+                    desc = "Only show the lowest slot warning when its durability drops below this percentage.",
+                    type = "range",
+                    order = 29.5,
+                    min = 1, max = 100, step = 1,
+                    get = function() local d = db(); return d and d.showLowestSlotSettings and d.showLowestSlotSettings.threshold or 50 end,
+                    set = function(_, v)
+                        local d = db()
+                        if d then
+                            if not d.showLowestSlotSettings then d.showLowestSlotSettings = {} end
+                            d.showLowestSlotSettings.threshold = v
+                            if ns.updateLowestSlotThreshold then ns.updateLowestSlotThreshold() end
+                        end
+                    end,
+                },
+                lowestSlotFontSize = {
+                    name = "Font Size",
+                    type = "range",
+                    order = 30,
+                    min = 5, max = 48, step = 1,
+                    get = function() local d = db(); return d and d.showLowestSlotSettings and d.showLowestSlotSettings.fontSize or 12 end,
+                    set = function(_, v)
+                        local d = db()
+                        if d then
+                            if not d.showLowestSlotSettings then d.showLowestSlotSettings = {} end
+                            d.showLowestSlotSettings.fontSize = v
+                            if ns.updateLowestSlotFontSize then ns.updateLowestSlotFontSize() end
                         end
                     end,
                 },
